@@ -1,0 +1,101 @@
+name: CI/CD (trunk-based) - Treinamento
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simular lint
+        run: |
+          echo "Rodando Lint..."
+          sleep 10
+          echo "Lint finalizado!"
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simular build
+        run: |
+          echo "Build em execução..."
+          sleep 10
+          echo "Build finalizado!"
+
+  vulnerability-scan:
+    name: Vulnerability Scan
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simular scan
+        run: |
+          echo "Escaneando vulnerabilidades..."
+          sleep 10
+          echo "Scan finalizado!"
+
+  deploy-dev:
+    name: Deploy → Dev (automático)
+    runs-on: ubuntu-latest
+    needs: vulnerability-scan
+    environment:
+      name: dev
+      url: https://dev.example.com
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simular deploy DEV
+        run: |
+          echo "Deploy automático em DEV..."
+          sleep 10
+          echo "Deploy em DEV concluído!"
+
+  deploy-qa:
+    name: Deploy → QA (manual)
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    environment:
+      name: qa
+      url: https://qa.example.com
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simular deploy QA
+        run: |
+          echo "Deploy em QA aguardando aprovação..."
+          sleep 10
+          echo "Deploy em QA concluído!"
+
+  deploy-stage:
+    name: Deploy → Stage (manual)
+    runs-on: ubuntu-latest
+    needs: deploy-qa
+    environment:
+      name: stage
+      url: https://stage.example.com
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simular deploy STAGE
+        run: |
+          echo "Deploy em STAGE aguardando aprovação..."
+          sleep 10
+          echo "Deploy em STAGE concluído!"
+
+  deploy-prod:
+    name: Deploy → Production (manual)
+    runs-on: ubuntu-latest
+    needs: deploy-stage
+    environment:
+      name: production
+      url: https://prod.example.com
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simular deploy PROD
+        run: |
+          echo "Deploy em PROD aguardando aprovação..."
+          sleep 10
+          echo "Deploy em PROD concluído!"
